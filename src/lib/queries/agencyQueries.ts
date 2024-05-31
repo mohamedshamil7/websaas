@@ -73,3 +73,18 @@ export const updateAgencyDetails = async (
       console.log(error)
     }
   }
+
+
+  export const getAgencyDetails = async (agencyId:string)=>{
+
+   const response =  await db.agency.findUnique({
+      where: {
+        id: agencyId,
+      },
+      include: {
+        SubAccount: true,
+      },
+    })
+    return response
+    
+  }
