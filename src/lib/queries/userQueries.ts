@@ -226,3 +226,6 @@ export const verifyAndAcceptInvitation = async () => {
   
     return resposne
   }
+
+
+  

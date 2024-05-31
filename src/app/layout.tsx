@@ -3,6 +3,8 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/providers/theme-provider";
 import ModalProvider from "@/providers/modal-provider";
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as SonnarToaster } from "@/components/ui/sonner";
 
 const font = DM_Sans({ subsets: ['latin'] })
 
@@ -28,6 +30,8 @@ export default function RootLayout({
         >
           <ModalProvider>
           {children}
+          <Toaster />
+            <SonnarToaster position="bottom-left" />
 
           </ModalProvider>
         </ThemeProvider>
