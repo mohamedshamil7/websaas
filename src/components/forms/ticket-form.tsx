@@ -301,6 +301,7 @@ const TicketForm = ({ getNewTicket, laneId, subaccountId }: Props) => {
                   <CommandEmpty>No Customer found.</CommandEmpty>
                   <CommandGroup>
                     {contactList.map((c) => (
+                      // error in using command item
                       <CommandItem
                         key={c.id}
                         value={c.id}
@@ -338,3 +339,25 @@ const TicketForm = ({ getNewTicket, laneId, subaccountId }: Props) => {
 }
 
 export default TicketForm
+
+
+
+
+
+{/* <CommandItem
+                        key={c.id}
+                        value={c.id}
+                        onSelect={(currentValue) => {
+                          setContact(
+                            currentValue === contact ? '' : currentValue
+                          )
+                        }}
+                      >
+                        {c.name}
+                        <CheckIcon
+                          className={cn(
+                            'ml-auto h-4 w-4',
+                            contact === c.id ? 'opacity-100' : 'opacity-0'
+                          )}
+                        />
+                      </CommandItem> */}
