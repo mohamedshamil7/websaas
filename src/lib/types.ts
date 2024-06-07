@@ -1,9 +1,10 @@
 import { Contact, Lane, Notification, Prisma, Role, Tag, Ticket, User } from "@prisma/client"
 import { __getUsersWithAgencySubAccountPermissionsSidebarOptions, getAuthUserDetails, getUserPermissions } from "./queries/userQueries"
 import { getMedia } from "./queries/mediaQueries"
-import { z } from "zod"
+import { StringValidation, z } from "zod"
 import { getPipelineDetails } from "./queries/pipelineQueries"
 import { _getTicketsWithAllRelations, getTicketsWithTags } from "./queries/ticketQueries"
+import Stripe from "stripe"
 
 export type NotificationWithUser =
   | ({
@@ -85,3 +86,26 @@ export const ContactUserFormSchema = z.object({
   name: z.string().min(1, 'Required'),
   email: z.string().email(),
 })
+
+export type Address = {
+  city: string;
+  country : string;
+  line1: string;
+  postal_code:string;
+  state: string;
+}
+
+export type ShippingInfo  ={
+  address: Address;
+  name: string
+}
+
+export type StripeCustomerType ={
+   email: string;
+   name : string;
+   shipping : ShippingInfo;
+   address : Address;
+}
+
+
+export type PricesList = Stripe.ApiList<Stripe.Price >
