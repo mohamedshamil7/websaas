@@ -5,6 +5,7 @@ import { StringValidation, z } from "zod"
 import { getPipelineDetails } from "./queries/pipelineQueries"
 import { _getTicketsWithAllRelations, getTicketsWithTags } from "./queries/ticketQueries"
 import Stripe from "stripe"
+import { getFunnels } from "./queries/funnelqueries"
 
 export type NotificationWithUser =
   | ({
@@ -107,5 +108,22 @@ export type StripeCustomerType ={
    address : Address;
 }
 
+export const CreateFunnelFormSchema = z.object({
+  name: z.string().min(1),
+  description: z.string(),
+  subDomainName: z.string().optional(),
+  favicon: z.string().optional(),
+})
+
+export const FunnelPageSchema = z.object({
+  name: z.string().min(1),
+  pathName: z.string().optional(),
+})
 
 export type PricesList = Stripe.ApiList<Stripe.Price >
+
+export type FunnelsForSubAccount = Prisma.PromiseReturnType<
+  typeof getFunnels
+>[0]
+
+export type UpsertFunnelPage = Prisma.FunnelPageCreateWithoutFunnelInput

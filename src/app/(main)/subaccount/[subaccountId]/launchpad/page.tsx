@@ -1,7 +1,10 @@
 import BlurPage from '@/components/global/blurpage'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { db } from '@/lib/db'
 import { getSubaccountDetails } from '@/lib/queries/subAccountQueries'
+import { stripe } from '@/lib/stripe'
+import { getStripeOAuthLink } from '@/lib/utils'
 import { CheckCircleIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -32,30 +35,30 @@ const LaunchPad = async({params,searchParams}: Props) => {
         subaccountDetails.name &&
         subaccountDetails.state
 
-        // const stripeOAuthLink = getStripeOAuthLink(
-        //     'subaccount',
-        //     `launchpad___${subaccountDetails.id}`
-        //   )
+        const stripeOAuthLink = getStripeOAuthLink(
+            'subaccount',
+            `launchpad___${subaccountDetails.id}`
+          )
         
           let connectedStripeAccount = false
 
-        //   if (searchParams.code) {
-        //     if (!subaccountDetails.connectAccountId) {
-        //       try {
-        //         const response = await stripe.oauth.token({
-        //           grant_type: 'authorization_code',
-        //           code: searchParams.code,
-        //         })
-        //         await db.subAccount.update({
-        //           where: { id: params.subaccountId },
-        //           data: { connectAccountId: response.stripe_user_id },
-        //         })
-        //         connectedStripeAccount = true
-        //       } catch (error) {
-        //         console.log('🔴 Could not connect stripe account', error)
-        //       }
-        //     }
-        //   }
+          if (searchParams.code) {
+            if (!subaccountDetails.connectAccountId) {
+              try {
+                const response = await stripe.oauth.token({
+                  grant_type: 'authorization_code',
+                  code: searchParams.code,
+                })
+                await db.subAccount.update({
+                  where: { id: params.subaccountId },
+                  data: { connectAccountId: response.stripe_user_id },
+                })
+                connectedStripeAccount = true
+              } catch (error) {
+                console.log('🔴 Could not connect stripe account', error)
+              }
+            }
+          }
         
 
   return (
@@ -107,8 +110,7 @@ const LaunchPad = async({params,searchParams}: Props) => {
                 ) : (
                   <Link
                     className="bg-primary py-2 px-4 rounded-md text-white"
-                    // href={stripeOAuthLink}
-                    href={""}
+                    href={stripeOAuthLink}
                   >
                     Start
                   </Link>

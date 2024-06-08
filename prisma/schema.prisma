@@ -350,7 +350,7 @@ model FunnelPage {
   updatedAt    DateTime @updatedAt
   visits       Int      @default(0)
   // content      String?  @db.LongText
-  content      String?  @db.Char()
+  content      String?  @db.Text
   order        Int
   previewImage String?  @db.Text
   funnelId     String
